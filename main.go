@@ -1,4 +1,4 @@
-package autodocs
+package main
 
 import "github.com/erfanmomeniii/autodocs/cmd"
 
