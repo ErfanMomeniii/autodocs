@@ -47,6 +47,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&projectPath, "project", "p", "./", "project path")
 }
 
+// Execute runs the root command and exits the program if an error occurs.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

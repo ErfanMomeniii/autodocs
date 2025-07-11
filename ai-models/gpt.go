@@ -6,20 +6,20 @@ import (
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
 	"github.com/openai/openai-go/shared"
+	"strings"
 )
 
-const GPTPrompt = `You are a Go documentation assistant. I will give you the content of a Go (.go) file. Your task is to **only add missing GoDoc comments** to all exported elements (functions, methods, structs, interfaces, constants, and variables). 
-
-Your additions must follow the official [GoDoc documentation style](https://go.dev/doc/comment), which includes:
-
-- Comments must start with the name of the exported element (e.g., "// MyFunction does ...")
-- Comments must be full sentences and grammatically correct.
-- Use a clear, concise, and informative style.
-- Do **not** change any existing code.
-- Do **not** add comments for unexported (lowercase) items unless already documented.
-- Do **not** invent behavior — explain what the code **actually** does, based on the implementation.
-
-Return the **full updated .go file** with comments inserted in the proper locations.
+const GPTPrompt = `You are a Go documentation assistant. I will give you the content of a Go (.go) file. Your task is to **only add missing GoDoc comments** to all elements (exported and unexported functions, methods, structs, interfaces, constants, and variables).
+You must follow these rules:
+- Your **only job is to add missing GoDoc comments**.
+- Do **not** delete, rename, move, or modify any code.
+- Do **not** change the structure, logic, or formatting of the code.
+- Do **not** remove any functions, even unexported ones.
+- If an item already has a comment, leave it unchanged.
+- Use [GoDoc style](https://go.dev/doc/comment):
+- Comments must start with the name of the item (e.g., "// MyFunction does ...")
+- Be grammatically correct, concise, and informative.
+- Return the **full updated .go file** with comments inserted in the proper locations.
 
 Here is the input Go file content:
 `
@@ -82,11 +82,13 @@ var validChatModels = map[string]struct{}{
 	shared.ChatModelGPT3_5Turbo16k0613:               {},
 }
 
+// IsValidGPTChatModel returns true if the given model string is a valid GPT chat model.
 func IsValidGPTChatModel(model string) bool {
 	_, ok := validChatModels[model]
 	return ok
 }
 
+// GPT represents a GPT model instance that can generate Go documentation.
 type GPT struct {
 	modelName string
 	client    client
@@ -96,6 +98,8 @@ type client struct {
 	c openai.Client
 }
 
+// Generate runs the documentation generation process on all Go files in the specified path.
+// It reads each file, generates GoDoc comments using the GPT model, and writes the updated content back.
 func (g *GPT) Generate(path string) error {
 	p := projectParser.Parser{}
 
@@ -121,6 +125,7 @@ func (g *GPT) Generate(path string) error {
 	return nil
 }
 
+// NewGPT creates a new GPT instance with the given model name and OpenAI API key.
 func NewGPT(modelName string, apiKey string) *GPT {
 	return &GPT{
 		modelName: modelName,
@@ -132,6 +137,7 @@ func NewGPT(modelName string, apiKey string) *GPT {
 	}
 }
 
+// addGoDocs sends the given file content to the GPT model and returns the content augmented with GoDoc comments.
 func (g *GPT) addGoDocs(fileContent []byte) ([]byte, error) {
 	result, err := g.client.c.Chat.Completions.New(context.Background(),
 		openai.ChatCompletionNewParams{
@@ -144,5 +150,17 @@ func (g *GPT) addGoDocs(fileContent []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return []byte(result.Choices[0].Message.Content), nil
+	return []byte(stripGoCodeFence(result.Choices[0].Message.Content)), nil
+}
+
+// stripGoCodeFence removes Go code fences (```go ... ```) from the given string.
+func stripGoCodeFence(s string) string {
+	s = strings.TrimSpace(s)
+	if strings.HasPrefix(s, "```go") {
+		s = strings.TrimPrefix(s, "```go")
+	}
+	if strings.HasSuffix(s, "```") {
+		s = strings.TrimSuffix(s, "```")
+	}
+	return strings.TrimSpace(s)
 }

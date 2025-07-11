@@ -6,10 +6,12 @@ import (
 	"path/filepath"
 )
 
+// File represents a file with its path.
 type File struct {
 	path string
 }
 
+// Write writes newContent to the file represented by File.
 func (f *File) Write(newContent []byte) error {
 	return os.WriteFile(f.path, newContent, 0644)
 }
@@ -22,8 +24,10 @@ func (f *File) Read() ([]byte, error) {
 	return content, nil
 }
 
+// Parser provides functionality to parse files in a project.
 type Parser struct{}
 
+// AllFiles returns a slice of Go source files found recursively under the given path.
 func (p *Parser) AllFiles(path string) ([]File, error) {
 	var files []File
 
@@ -33,6 +37,10 @@ func (p *Parser) AllFiles(path string) ([]File, error) {
 		}
 
 		if info.IsDir() {
+			return nil
+		}
+
+		if filepath.Ext(path) != ".go" {
 			return nil
 		}
 
