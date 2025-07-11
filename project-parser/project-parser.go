@@ -16,6 +16,7 @@ func (f *File) Write(newContent []byte) error {
 	return os.WriteFile(f.path, newContent, 0644)
 }
 
+// Read reads the content of the file represented by File and returns it.
 func (f *File) Read() ([]byte, error) {
 	content, err := os.ReadFile(f.path)
 	if err != nil {

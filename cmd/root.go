@@ -42,6 +42,7 @@ Ideal for both small libraries and large projects.`,
 }
 
 func init() {
+	// init initializes the command line flags.
 	rootCmd.PersistentFlags().StringVarP(&modelName, "model", "m", "gpt-4o", "model name")
 	rootCmd.PersistentFlags().StringVarP(&apiKey, "apikey", "k", "", "api key")
 	rootCmd.PersistentFlags().StringVarP(&projectPath, "project", "p", "./", "project path")
