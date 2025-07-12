@@ -58,12 +58,11 @@ This command will automatically generate GoDoc-style comments for all exported d
 
 ## ⚙️ Available Flags
 
-| Flag       | Shorthand | Default             | Description                                                           |
-| ---------- | --------- | ------------------- | --------------------------------------------------------------------- |
-| `--path`   | `-p`      | `./`                | Path to the Go project to document                                    |
-| `--model`  | `-m`      | `gpt-4o`            | AI model used for generating documentation                            |
-| `--apikey` | `-k`      | `$AUTODOCS_API_KEY` | API key for the AI provider. Can also be set via environment variable |
-
+| Flag         | Shorthand | Default             | Description                                                                 |
+|--------------|-----------|---------------------|-----------------------------------------------------------------------------|
+| `--path` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | `-p`      | `./`                | Path to the Go project to document                                          |
+| `--model`    | `-m`      | `gpt-4o`            | Model name (e.g. `gpt-4o`, `claude-3-opus`)                                 |
+| `--apikey`   | `-k`      | `$AUTODOCS_API_KEY` | API key used for authentication. Can also be set via environment variable. |
 
 ## 🔌 Supported AI Providers
 | Provider           | Status        | Notes                                              |
