@@ -30,3 +30,28 @@ Designed to fit naturally into your development workflow, `autodocs` can be used
 
 ```bash
 go install github.com/erfanmomeniii/autodocs@latest
+```
+
+## 🚀 Usage
+
+After installation, you can run autodocs on your Go project like this:
+
+```bash
+autodocs run --path ./your-project --model gpt-4o --apikey your-api-key
+```
+Or use environment variable for the API key:
+
+```bash
+export AUTODOCS_API_KEY=your-api-key
+autodocs run --path ./your-project
+```
+
+This command will automatically generate GoDoc-style comments for all exported declarations in your project.
+
+## ⚙️ Available Flags
+
+| Flag       | Shorthand | Default             | Description                                                           |
+| ---------- | --------- | ------------------- | --------------------------------------------------------------------- |
+| `--path`   | `-p`      | `./`                | Path to the Go project to document                                    |
+| `--model`  | `-m`      | `gpt-4o`            | AI model used for generating documentation                            |
+| `--apikey` | `-k`      | `$AUTODOCS_API_KEY` | API key for the AI provider. Can also be set via environment variable |
