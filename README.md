@@ -56,7 +56,7 @@ autodocs run --path ./your-project
 
 This command will automatically generate GoDoc-style comments for all exported declarations in your project.
 
-## ⚙️ Available Flags
+##  🚩 Available Flags
 
 | Flag         | Shorthand | Default             | Description                                                                 |
 |--------------|-----------|---------------------|-----------------------------------------------------------------------------|
@@ -65,6 +65,7 @@ This command will automatically generate GoDoc-style comments for all exported d
 | `--apikey`   | `-k`      | `$AUTODOCS_API_KEY` | API key used for authentication. Can also be set via environment variable. |
 
 ## 🔌 Supported AI Providers
+
 | Provider           | Status        | Notes                                              |
 |--------------------|---------------|----------------------------------------------------|
 | ✅ OpenAI           | Supported     | All models (e.g., `gpt-4o`, `gpt-3.5-turbo`, etc.) |
@@ -76,6 +77,52 @@ This command will automatically generate GoDoc-style comments for all exported d
 | 🕒 Local LLMs       | Planned       | e.g., Ollama, LM Studio                            |
 
 Models are selected using the `--model` flag. AutoDocs will route to the correct provider based on the model name.
+
+## ⚙️ CI/CD Integration Example
+
+You can easily integrate `autodocs` into your continuous integration pipeline to enforce consistent and up-to-date documentation.
+Here’s a simple example using <b>GitHub Actions</b>:
+
+```yaml
+name: AutoDocs CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.24
+
+      - name: Install AutoDocs
+        run: go install github.com/erfanmomeniii/autodocs@latest
+
+      - name: Run AutoDocs
+        env:
+          AUTODOCS_API_KEY: ${{ secrets.AUTODOCS_API_KEY }}
+        run: |
+          autodocs run --path ./ --model gpt-4o --apikey $AUTODOCS_API_KEY
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "AutoDocs: update documentation" || echo "No changes to commit"
+          git push
+```
+Make sure to add your API key to your repository secrets as AUTODOCS_API_KEY.
 
 
 ## Contributing
