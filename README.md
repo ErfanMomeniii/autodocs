@@ -55,3 +55,21 @@ This command will automatically generate GoDoc-style comments for all exported d
 | `--path`   | `-p`      | `./`                | Path to the Go project to document                                    |
 | `--model`  | `-m`      | `gpt-4o`            | AI model used for generating documentation                            |
 | `--apikey` | `-k`      | `$AUTODOCS_API_KEY` | API key for the AI provider. Can also be set via environment variable |
+
+
+## 🔌 Supported AI Providers
+| Provider           | Status      | Notes                                         |
+| ------------------ | ----------- | --------------------------------------------- |
+| ✅ OpenAI           | Supported   | `gpt-4o`, `gpt-3.5-turbo`, etc.               |
+| 🕒 Anthropic       | Coming soon | `Claude 3` models                             |
+| 🕒 Google (Gemini) | Coming soon | `Gemini 1.5`                                  |
+| 🕒 Mistral         | Coming soon | `Mixtral`, `Mistral-7B`                       |
+| 🕒 Meta (LLaMA)    | Coming soon | `LLaMA 2`, `LLaMA 3`                          |
+| 🕒 Cohere          | Coming soon | `Command R`, `Command R+`                     |
+| 🕒 Local LLMs      | Planned     | e.g., [Ollama](https://ollama.com), LM Studio |
+
+
+## Contributing
+
+Pull requests are welcome. For changes, please open an issue first to discuss what you would like to change. Please make
+sure to update tests as appropriate.
