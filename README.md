@@ -26,6 +26,14 @@ Designed to fit naturally into your development workflow, `autodocs` can be used
 
 ---
 
+## ❓ Why AutoDocs?
+
+- 📚 **Improve code readability** with AI-generated GoDoc-style comments.
+- ⚡ **Save time** by avoiding repetitive, manual documentation tasks.
+- 🧠 **Model-aware**: Customize output using powerful models like `gpt-4o`.
+- 🔧 **CI-friendly**: Use in local development or integrate into pipelines.
+
+
 ## 📦 Installation
 
 ```bash
@@ -58,15 +66,17 @@ This command will automatically generate GoDoc-style comments for all exported d
 
 
 ## 🔌 Supported AI Providers
-| Provider           | Status      | Notes                                         |
-| ------------------ | ----------- | --------------------------------------------- |
-| ✅ OpenAI           | Supported   | `gpt-4o`, `gpt-3.5-turbo`, etc.               |
-| 🕒 Anthropic       | Coming soon | `Claude 3` models                             |
-| 🕒 Google (Gemini) | Coming soon | `Gemini 1.5`                                  |
-| 🕒 Mistral         | Coming soon | `Mixtral`, `Mistral-7B`                       |
-| 🕒 Meta (LLaMA)    | Coming soon | `LLaMA 2`, `LLaMA 3`                          |
-| 🕒 Cohere          | Coming soon | `Command R`, `Command R+`                     |
-| 🕒 Local LLMs      | Planned     | e.g., [Ollama](https://ollama.com), LM Studio |
+| Provider           | Status        | Notes                                              |
+|--------------------|---------------|----------------------------------------------------|
+| ✅ OpenAI           | Supported     | All models (e.g., `gpt-4o`, `gpt-3.5-turbo`, etc.) |
+| 🕒 Anthropic        | Coming soon   | All Claude models                                  |
+| 🕒 Google (Gemini)  | Coming soon   | All Gemini models                                  |
+| 🕒 Mistral          | Coming soon   | All Mixtral/Mistral models                         |
+| 🕒 Meta (LLaMA)     | Coming soon   | All LLaMA models                                   |
+| 🕒 Cohere           | Coming soon   | All Command R models                               |
+| 🕒 Local LLMs       | Planned       | e.g., Ollama, LM Studio                            |
+
+Models are selected using the `--model` flag. AutoDocs will route to the correct provider based on the model name.
 
 
 ## Contributing
