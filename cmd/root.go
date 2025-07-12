@@ -29,9 +29,26 @@ Ideal for both small libraries and large projects.`,
 
 func init() {
 	// init initializes the command line flags.
-	rootCmd.PersistentFlags().StringVarP(&modelName, "model", "m", "gpt-4o", "model name")
-	rootCmd.PersistentFlags().StringVarP(&apiKey, "apikey", "k", "", "api key")
-	rootCmd.PersistentFlags().StringVarP(&projectPath, "project", "p", "./", "project path")
+	rootCmd.PersistentFlags().StringVarP(
+		&modelName,
+		"model", "m",
+		"gpt-4o",
+		"AI model to use for generating documentation (default: gpt-4o)",
+	)
+
+	rootCmd.PersistentFlags().StringVarP(
+		&apiKey,
+		"apikey", "k",
+		os.Getenv("AUTODOCS_API_KEY"),
+		"API key for the AI provider (default: AUTODOCS_API_KEY env variable)",
+	)
+
+	rootCmd.PersistentFlags().StringVarP(
+		&projectPath,
+		"path", "p",
+		"./",
+		"Path to the Go project to document (default: current directory)",
+	)
 
 	rootCmd.AddCommand(runCmd)
 }
