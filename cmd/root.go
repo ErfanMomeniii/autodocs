@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	models "github.com/erfanmomeniii/autodocs/ai-models"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -13,6 +12,7 @@ var (
 	projectPath string
 )
 
+// rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{
 	Use:   "autodocs",
 	Short: "AutoDocs is a very fast go docs generator by using AI",
@@ -25,20 +25,6 @@ Designed for speed and simplicity, AutoDocs helps you:
   - Keep documentation in sync with your code
 
 Ideal for both small libraries and large projects.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		model, err := models.NewAIModel(
-			models.WithApiKey(apiKey),
-			models.WithName(modelName))
-		if err != nil {
-			println(err.Error())
-			return
-		}
-		if err := model.Generator.Generate(projectPath); err != nil {
-			println(err.Error())
-			return
-		}
-		return
-	},
 }
 
 func init() {
@@ -46,6 +32,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&modelName, "model", "m", "gpt-4o", "model name")
 	rootCmd.PersistentFlags().StringVarP(&apiKey, "apikey", "k", "", "api key")
 	rootCmd.PersistentFlags().StringVarP(&projectPath, "project", "p", "./", "project path")
+
+	rootCmd.AddCommand(runCmd)
 }
 
 // Execute runs the root command and exits the program if an error occurs.

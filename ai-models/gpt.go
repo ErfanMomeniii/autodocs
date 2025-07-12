@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const GPTPrompt = `You are a Go documentation assistant. I will give you the content of a Go (.go) file. Your task is to **only add missing GoDoc comments** to all elements (exported and unexported functions, methods, structs, interfaces, constants, and variables).
+const GPTPrompt = `You are a Go documentation assistant. I will give you the content of a Go (.go) file. Your task to **only add missing GoDoc comments** to all elements (exported and unexported functions, methods, structs, interfaces, constants, and variables).
 You must follow these rules:
 - Your **only job is to add missing GoDoc comments**.
 - Do **not** delete, rename, move, or modify any code.
