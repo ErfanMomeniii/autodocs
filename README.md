@@ -6,7 +6,7 @@
   <a href="https://github.com/erfanmomeniii/autodocs">
     <img
       src="./assets/images/logo.jpg" 
-      alt="AutoDocs Logo" width="80%">
+      alt="AutoDocs Logo" width="90%">
   </a>
 </div>
 
@@ -29,4 +29,11 @@
 
 You can use this as part of your CI workflow or during development to keep your code well-documented.
 
+# Documentation
+
+## Install
+
+```bash
+go install github.com/erfanmomeniii/autodocs@latest
+```   
 
