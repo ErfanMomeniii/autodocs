@@ -2,11 +2,15 @@ package ai_models
 
 import (
 	"context"
+	"fmt"
+	"github.com/briandowns/spinner"
 	projectParser "github.com/erfanmomeniii/autodocs/project-parser"
+	"github.com/fatih/color"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
 	"github.com/openai/openai-go/shared"
 	"strings"
+	"time"
 )
 
 const GPTPrompt = `You are a Go documentation assistant. I will give you the content of a Go (.go) file. Your task to **only add missing GoDoc comments** to all elements (exported and unexported functions, methods, structs, interfaces, constants, and variables).
@@ -57,7 +61,6 @@ var validChatModels = map[string]struct{}{
 	shared.ChatModelGPT4oMiniSearchPreview:           {},
 	shared.ChatModelGPT4oSearchPreview2025_03_11:     {},
 	shared.ChatModelGPT4oMiniSearchPreview2025_03_11: {},
-	shared.ChatModelChatgpt4oLatest:                  {},
 	shared.ChatModelCodexMiniLatest:                  {},
 	shared.ChatModelGPT4oMini:                        {},
 	shared.ChatModelGPT4oMini2024_07_18:              {},
@@ -103,25 +106,45 @@ type client struct {
 func (g *GPT) Generate(path string) error {
 	p := projectParser.Parser{}
 
+	color.Cyan("🔍 Scanning Go files in: %s\n", path)
 	files, err := p.AllFiles(path)
 	if err != nil {
+		color.Red("❌ Failed to read files: %v", err)
 		return err
 	}
+	color.Green("✅ Found %d Go files to process\n", len(files))
 
-	for _, file := range files {
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+	s.Suffix = " Generating documentation..."
+	s.Start()
+
+	for i, file := range files {
+		s.Suffix = fmt.Sprintf(" Generating docs for file %d of %d: %s", i+1, len(files), file.Path)
+
 		content, err := file.Read()
 		if err != nil {
+			s.Stop()
+			color.Red("❌ Failed to read file %s: %v", file.Path, err)
 			return err
 		}
+
 		finalContent, err := g.addGoDocs(content)
 		if err != nil {
+			s.Stop()
+			color.Red("❌ Failed to generate docs for file %s: %v", file.Path, err)
 			return err
 		}
+
 		err = file.Write(finalContent)
 		if err != nil {
+			s.Stop()
+			color.Red("❌ Failed to write updated content to %s: %v", file.Path, err)
 			return err
 		}
 	}
+
+	s.Stop()
+	color.Green("\n🎉 All Go files have been successfully documented!")
 	return nil
 }
 

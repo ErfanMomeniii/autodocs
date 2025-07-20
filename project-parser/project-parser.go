@@ -8,19 +8,19 @@ import (
 
 // File represents a file with its path.
 type File struct {
-	path string
+	Path string
 }
 
 // Write writes newContent to the file represented by File.
 func (f *File) Write(newContent []byte) error {
-	return os.WriteFile(f.path, newContent, 0644)
+	return os.WriteFile(f.Path, newContent, 0644)
 }
 
 // Read reads the content of the file represented by File and returns it.
 func (f *File) Read() ([]byte, error) {
-	content, err := os.ReadFile(f.path)
+	content, err := os.ReadFile(f.Path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file %s: %w", f.path, err)
+		return nil, fmt.Errorf("failed to read file %s: %w", f.Path, err)
 	}
 	return content, nil
 }
@@ -46,7 +46,7 @@ func (p *Parser) AllFiles(path string) ([]File, error) {
 		}
 
 		files = append(files, File{
-			path: path,
+			Path: path,
 		})
 		return nil
 	})
